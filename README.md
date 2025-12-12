@@ -59,7 +59,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please check out the [issues](https://github.com/your-username/d-decode/issues) or submit a Pull Request.
+Contributions are welcome! Please check out the [issues](https://github.com/ddx-510/d-decode/issues) or submit a Pull Request.
 
 ## 📄 License
 

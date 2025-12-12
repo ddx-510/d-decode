@@ -37,7 +37,7 @@ const SciTechLayout: React.FC<SciTechLayoutProps> = ({ children }) => {
 
                     <div className="hidden sm:flex items-center gap-4 text-xs font-mono">
                         <a
-                            href="https://github.com/your-username/d-decode"
+                            href="https://github.com/ddx-510/d-decode"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-2 text-zinc-400 hover:text-white hover:bg-white/10 rounded-full transition-all group"
