@@ -1,8 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# d-decode: Advanced Sci-Tech Base64 Utility
 
-## Getting Started
+![D-Decode Banner](public/logo_placeholder_if_any.png)
 
-First, run the development server:
+**d-decode** is a state-of-the-art, privacy-focused utility for decoding, analyzing, and visualizing Base64 artifacts. Built with a "Sci-Tech" aesthetic, it transforms mundane data inspection into an immersive experience.
+
+## 🚀 Features
+
+### Core Capabilities
+*   **Universal Decoding:** Instantly decodes standard Base64 strings into their original binary formats.
+*   **Privacy-First:** **Zero server-side processing.** All decoding happens locally in your browser using modern Web APIs. Your data never leaves your device.
+*   **Advanced File Detection:**
+    *   **Images:** Native preview for PNG, JPEG, GIF, WebP, SVG, BMP.
+    *   **Documents:** Native PDF rendering and intelligent detection for Office files (Word, Excel, PowerPoint).
+    *   **Multimedia:** Integrated HTML5 Audio (MP3, WAV) and Video (MP4, WebM) players.
+    *   **Archives:** Detection for Zip, Docx, Xlsx, Jar, and APK formats.
+*   **Text & Code:** Automatic detection and syntax highlighting for JSON, XML, JavaScript, and plain text.
+
+### Visualizers
+*   **Hex/Binary Matrix:** Inspect raw byte data in a structured, paginated hex viewer.
+*   **Data Density Map:** A unique visualization that renders binary data as a 2D pixel density heatmap, allowing you to "see" the structure of unknown files.
+
+### UX/UI
+*   **Sci-Tech Theme:** Immersive dark mode interface with holographic HUD components, ambient glows, and interactive particle effects.
+*   **Vertical Browser View:** Maximized viewing area for documents and code.
+*   **Input Sanitization:** Automatically cleans whitespace and data URI schemes from inputs.
+
+## 🛠️ Tech Stack
+
+*   **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
+*   **Language:** [TypeScript](https://www.typescriptlang.org/)
+*   **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+*   **Fonts:** Geist Sans & Mono
+*   **Deployment:** Vercel
+
+## 📦 Getting Started
+
+First, install the dependencies:
+
+```bash
+npm install
+# or
+yarn
+# or
+pnpm install
+```
+
+Run the development server:
 
 ```bash
 npm run dev
@@ -10,27 +53,14 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🤝 Contributing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Contributions are welcome! Please check out the [issues](https://github.com/your-username/d-decode/issues) or submit a Pull Request.
 
-## Learn More
+## 📄 License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is open source and available under the [MIT License](LICENSE).
