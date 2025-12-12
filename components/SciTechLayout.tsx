@@ -1,12 +1,20 @@
-import React from "react";
+'use client';
+
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import AdBanner from "./AdBanner";
+import DonationModal from "./DonationModal";
+import { useProStatus } from "../hooks/useProStatus";
 
 interface SciTechLayoutProps {
     children: React.ReactNode;
 }
 
 const SciTechLayout: React.FC<SciTechLayoutProps> = ({ children }) => {
+    const { isPro, isLoading, verifyCode } = useProStatus();
+    const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
+
     return (
         <div className="min-h-screen flex flex-col relative overflow-hidden bg-deep-space">
             {/* Ambient Glow */}
@@ -36,6 +44,20 @@ const SciTechLayout: React.FC<SciTechLayoutProps> = ({ children }) => {
                     </div>
 
                     <div className="hidden sm:flex items-center gap-4 text-xs font-mono">
+                        {!isPro && !isLoading && (
+                            <button
+                                onClick={() => setIsDonationModalOpen(true)}
+                                className="px-3 py-1.5 bg-yellow-500/10 border border-yellow-500/50 text-yellow-500 rounded hover:bg-yellow-500/20 transition-colors animate-pulse hover:animate-none"
+                            >
+                                REMOVE ADS
+                            </button>
+                        )}
+                        {isPro && (
+                            <div className="flex items-center gap-2 text-neon-cyan border border-neon-cyan/30 px-2 py-1 rounded bg-neon-cyan/5">
+                                <span className="text-[10px]">★ PRO ACCESS</span>
+                            </div>
+                        )}
+
                         <a
                             href="https://github.com/ddx-510/d-decode"
                             target="_blank"
@@ -60,6 +82,11 @@ const SciTechLayout: React.FC<SciTechLayoutProps> = ({ children }) => {
 
             {/* Main Content */}
             <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-12 relative z-10">
+                {!isPro && !isLoading && (
+                    <div className="mb-8">
+                        <AdBanner />
+                    </div>
+                )}
                 {children}
             </main>
 
@@ -79,6 +106,12 @@ const SciTechLayout: React.FC<SciTechLayoutProps> = ({ children }) => {
                     </p>
                 </div>
             </footer>
+
+            <DonationModal
+                isOpen={isDonationModalOpen}
+                onClose={() => setIsDonationModalOpen(false)}
+                onRedeem={verifyCode}
+            />
         </div>
     );
 };
