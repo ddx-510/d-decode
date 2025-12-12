@@ -1,7 +1,5 @@
 # d-decode: Advanced Sci-Tech Base64 Utility
 
-![D-Decode Banner](public/logo_placeholder_if_any.png)
-
 **d-decode** is a state-of-the-art, privacy-focused utility for decoding, analyzing, and visualizing Base64 artifacts. Built with a "Sci-Tech" aesthetic, it transforms mundane data inspection into an immersive experience.
 
 ## 🚀 Features
