@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import SciTechLayout from "@/components/SciTechLayout";
 import Base64Converter from "@/components/Base64Converter";
+
+export const metadata: Metadata = {
+  other: {
+    "7c16d8d1b875b07e00b10ef548634a912b2feea1": "7c16d8d1b875b07e00b10ef548634a912b2feea1",
+  },
+};
 
 export default function Home() {
   return (
