@@ -1,19 +1,33 @@
 'use client';
 
-import React from 'react';
-import GoogleAdUnit from './GoogleAdUnit';
+import React, { useEffect, useRef } from 'react';
 
 interface AdBannerProps {
     className?: string;
 }
 
 const AdBanner: React.FC<AdBannerProps> = ({ className = '' }) => {
+    const adContainerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!adContainerRef.current) return;
+
+        // Prevent duplicate injection
+        if (adContainerRef.current.querySelector('script[src*="stable-skill.com"]')) return;
+
+        const script = document.createElement('script');
+        (script as any).settings = {};
+        script.src = "//stable-skill.com/bRXAV.s/dBGWlk0PYYWYci/Hecm_9YupZTUVlQkpPYTLYF3lMSzNYVyZMFTvYZt/NCjIc/zwNSj/IyxKNywQ";
+        script.async = true;
+        script.referrerPolicy = 'no-referrer-when-downgrade';
+
+        adContainerRef.current.appendChild(script);
+    }, []);
+
     return (
         <div className={`w-full min-h-[100px] border border-yellow-500/30 bg-yellow-500/5 rounded-lg relative overflow-hidden group ${className}`}>
-            {/* Google Ad Unit */}
-            <div className="absolute inset-0 z-20 flex justify-center bg-black">
-                <GoogleAdUnit slotId="YOUR-AD-SLOT-ID-HERE" className="w-full h-full" />
-            </div>
+            {/* Ad Container */}
+            <div ref={adContainerRef} className="absolute inset-0 z-20 flex justify-center bg-black" />
 
             {/* Fallback / Placeholder (Visible if ad fails to load or while loading) */}
             <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(234,179,8,0.05)_50%)] bg-[length:100%_4px] pointer-events-none z-10" />
