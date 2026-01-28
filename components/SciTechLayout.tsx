@@ -41,6 +41,20 @@ const SciTechLayout: React.FC<SciTechLayoutProps> = ({ children }) => {
                                 <span className="text-[10px] text-neon-cyan font-mono tracking-[0.3em] opacity-70">ADVANCED UTILITY</span>
                             </div>
                         </Link>
+                        <nav className="hidden md:flex items-center gap-6 ml-8 border-l border-white/10 pl-8">
+                            <Link href="/" className="text-xs font-mono tracking-widest text-zinc-400 hover:text-neon-cyan transition-colors">
+                                BASE64
+                            </Link>
+                            <Link href="/url" className="text-xs font-mono tracking-widest text-zinc-400 hover:text-neon-cyan transition-colors">
+                                URL
+                            </Link>
+                            <Link href="/jwt" className="text-xs font-mono tracking-widest text-zinc-400 hover:text-neon-cyan transition-colors">
+                                JWT
+                            </Link>
+                            <Link href="/html" className="text-xs font-mono tracking-widest text-zinc-400 hover:text-neon-cyan transition-colors">
+                                HTML
+                            </Link>
+                        </nav>
                     </div>
 
                     <div className="hidden sm:flex items-center gap-4 text-xs font-mono">
