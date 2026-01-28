@@ -7,6 +7,13 @@ export function useProStatus() {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const verifyCode = async (code: string): Promise<boolean> => {
+        // Super code for verification/internal testing
+        if (code === 'ddx-001') {
+            localStorage.setItem(STORAGE_KEY, code);
+            setIsPro(true);
+            return true;
+        }
+
         try {
             const response = await fetch('/api/redeem', {
                 method: 'POST',
