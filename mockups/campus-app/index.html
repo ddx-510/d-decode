@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>CampusOne Mock</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+  :root {
+    --navy: #1d2a5c;
+    --accent: #13a37a;
+    --accent-2: #0e8a66;
+    --banner: #ffd166;
+    --bg: #ffffff;
+    --soft: #f2f3f6;
+    --muted: #6b7393;
+    --tab: #7f8fc0;
+    --card-head: #13a37a;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: #111; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif; overflow: hidden; }
+  button { font: inherit; border: 0; background: none; cursor: pointer; color: inherit; }
+
+  .screen { position: fixed; inset: 0; display: flex; flex-direction: column; background: var(--bg); max-width: 480px; margin: 0 auto; }
+  .screen.hidden { display: none; }
+  .scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+
+  /* ---------- Home ---------- */
+  .topbar { display: flex; align-items: center; justify-content: space-between; padding: calc(env(safe-area-inset-top) + 14px) 20px 12px; border-bottom: 1px solid #eee; }
+  .logo b { display: block; font-size: 30px; font-weight: 900; letter-spacing: -0.5px; line-height: 1; color: var(--navy); }
+  .logo b span { color: var(--accent); }
+  .logo small { font-size: 12px; color: var(--navy); }
+  .top-actions { display: flex; gap: 10px; }
+  .circle { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: #fff; }
+  .circle.search { background: linear-gradient(135deg, #6a7cf0, #a35cf0); }
+  .circle.profile { background: var(--accent); }
+
+  .banner { background: var(--banner); padding: 22px 20px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .banner h1 { margin: 0; font-size: 26px; color: var(--navy); font-weight: 800; }
+  .banner p { margin: 4px 0 0; font-weight: 700; color: var(--navy); font-size: 15px; }
+  .banner-btns { display: flex; gap: 6px; flex-shrink: 0; }
+  .pill { height: 34px; border-radius: 17px; padding: 0 18px; font-size: 15px; }
+  .pill.scan { background: #fff; border: 2px solid var(--accent); color: var(--accent); display: grid; place-items: center; width: 70px; }
+  .pill.ecard { background: var(--accent); color: #fff; }
+  .pill:active { transform: scale(.96); }
+
+  section { padding: 22px 20px; border-bottom: 10px solid var(--soft); }
+  .sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .sec-title { display: flex; align-items: center; gap: 12px; font-size: 24px; font-weight: 700; color: var(--navy); }
+  .sec-icon { width: 38px; height: 38px; border-radius: 50%; background: var(--accent); display: grid; place-items: center; color: #fff; font-size: 18px; }
+  .btn-sm { background: var(--accent); color: #fff; border-radius: 16px; padding: 6px 16px; font-weight: 600; font-size: 15px; }
+
+  .pages { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin: 0 -20px; }
+  .pages::-webkit-scrollbar { display: none; }
+  .page { flex: 0 0 100%; scroll-snap-align: start; display: grid; grid-template-columns: repeat(4, 1fr); row-gap: 26px; padding: 0 8px; }
+  .tile { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 12.5px; text-align: center; color: #222; }
+  .tile .ic { width: 62px; height: 62px; border-radius: 20px; background: var(--soft); display: grid; place-items: center; }
+  .tile .ic span { width: 46px; height: 46px; border-radius: 6px; display: grid; place-items: center; font-size: 24px; }
+  .dots { display: flex; justify-content: center; margin-top: 22px; }
+  .dots i { width: 16px; height: 4px; background: #ccc; }
+  .dots i.on { background: var(--accent); }
+
+  .quote-brand { font-family: "Brush Script MT", "Snell Roundhand", cursive; font-size: 40px; font-weight: 700; }
+  .quote h3 { margin: 6px 0 4px; font-size: 17px; }
+  .quote p { margin: 0; font-size: 16px; line-height: 1.4; }
+  .quote em { display: block; margin-top: 12px; color: #333; }
+
+  .ev-filter { color: var(--navy); font-weight: 700; border-bottom: 1px solid #ccc; padding-bottom: 4px; display: inline-block; }
+  .events { display: flex; gap: 12px; overflow-x: auto; margin: 14px -20px 0; padding: 0 20px; scrollbar-width: none; }
+  .events::-webkit-scrollbar { display: none; }
+  .ev { flex: 0 0 72%; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+  .ev .img { height: 110px; }
+  .ev .body { padding: 10px 12px 14px; font-size: 14px; }
+  .ev .body b { display: block; margin-bottom: 4px; }
+  .ev .body small { color: var(--muted); }
+
+  .tabbar { display: flex; justify-content: space-around; border-top: 1px solid #eee; padding: 8px 0 calc(env(safe-area-inset-bottom) + 8px); background: #fff; }
+  .tabbar button { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 13px; color: var(--tab); }
+  .tabbar button.on { color: var(--accent); }
+
+  /* ---------- eCard ---------- */
+  .nav { display: grid; grid-template-columns: 48px 1fr 48px; align-items: center; padding: calc(env(safe-area-inset-top) + 12px) 12px 14px; }
+  .nav h2 { margin: 0; text-align: center; font-size: 22px; font-weight: 500; color: var(--navy); }
+  .nav button { color: var(--navy); }
+
+  .idcard { margin: 0 12px; border-radius: 12px; border: 1px solid #c9c9c9; overflow: hidden; background: #f7f7f8; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .idcard .head { background: var(--card-head); display: flex; justify-content: space-between; align-items: center; padding: 16px 28px; color: #fff; }
+  .idcard .head span { font-size: 22px; }
+  .uni { display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 18px; }
+  .uni small { display: block; font-size: 7px; font-weight: 500; line-height: 1.1; }
+  .crest { width: 28px; height: 32px; border-radius: 4px 4px 14px 14px; background: #fff; color: var(--card-head); display: grid; place-items: center; font-size: 15px; font-weight: 900; }
+  .idcard .body { padding: 18px 18px 16px; }
+  .row { display: flex; gap: 18px; }
+  .photo { position: relative; width: 110px; height: 142px; flex-shrink: 0; border-radius: 4px; overflow: hidden; background: linear-gradient(#4a8de0, #9cc4f0); }
+  .photo > svg { position: absolute; inset: 0; width: 100%; height: 100%; transition: filter .25s; }
+  .photo.blur > svg { filter: blur(6px); }
+  .photo button { position: absolute; right: 6px; bottom: 6px; width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,.85); display: grid; place-items: center; color: var(--accent); }
+  .who b { display: block; color: var(--navy); font-size: 16px; letter-spacing: .5px; margin-top: 2px; }
+  .idline { display: flex; align-items: center; gap: 12px; margin-top: 18px; color: var(--navy); font-size: 14px; letter-spacing: .5px; }
+  .idline button { color: var(--navy); }
+  .prog { margin-top: 18px; font-size: 15px; line-height: 1.35; }
+  .prog b { font-weight: 600; text-transform: uppercase; }
+
+  .qr-wrap { padding: 16px 12px 110px; }
+  .qr-label { font-weight: 700; font-size: 16px; }
+  .qr-label span { font-weight: 400; margin-left: 14px; }
+  #qr { display: grid; place-items: center; margin-top: 14px; }
+  #qr svg, #qr img { width: 190px; height: 190px; }
+
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; background: #fbecef; border-radius: 22px 22px 0 0; padding: 10px 20px calc(env(safe-area-inset-bottom) + 20px); box-shadow: 0 -2px 12px rgba(0,0,0,.08); transition: transform .3s ease; transform: translateY(calc(100% - 76px - env(safe-area-inset-bottom))); }
+  .sheet.open { transform: translateY(0); }
+  .sheet .grip { width: 36px; height: 4px; background: #999; border-radius: 2px; margin: 0 auto 14px; }
+  .sheet h3 { margin: 0 0 18px; text-align: center; color: var(--navy); font-size: 22px; }
+  .sheet dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 10px 16px; font-size: 15px; }
+  .sheet dt { color: var(--muted); }
+  .sheet dd { margin: 0; }
+</style>
+</head>
+<body>
+
+<!-- ============ HOME ============ -->
+<div class="screen" id="home">
+  <div class="topbar">
+    <div class="logo"><b>campus<span>One</span></b><small>Meridian University</small></div>
+    <div class="top-actions">
+      <button class="circle search" aria-label="Search">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
+      </button>
+      <button class="circle profile" aria-label="Profile">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="scroll">
+    <div class="banner">
+      <div>
+        <h1>Hi Dai Tianle</h1>
+        <p>Student</p>
+      </div>
+      <div class="banner-btns">
+        <button class="pill scan" aria-label="Scan">
+          <svg width="26" height="20" viewBox="0 0 26 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 6V2h5M20 2h5v4M25 14v4h-5M6 18H1v-4M1 10h24"/></svg>
+        </button>
+        <button class="pill ecard" id="openCard">eCard</button>
+      </div>
+    </div>
+
+    <section>
+      <div class="sec-head">
+        <div class="sec-title"><div class="sec-icon">🧭</div>Explore</div>
+        <button class="btn-sm">+ App</button>
+      </div>
+      <div class="pages" id="pages">
+        <div class="page">
+          <div class="tile"><div class="ic"><span style="background:#5cb8a8">📰</span></div>Campus News</div>
+          <div class="tile"><div class="ic"><span style="background:#ee8080">💡</span></div>Lifelong Learning</div>
+          <div class="tile"><div class="ic"><span style="background:#b9c93a">🤝</span></div>Volunteer</div>
+          <div class="tile"><div class="ic"><span style="background:#fff;border:1px solid #ddd">💼</span></div>Careers</div>
+          <div class="tile"><div class="ic"><span style="background:#7dd6e2">🏷️</span></div>Privileges</div>
+          <div class="tile"><div class="ic"><span style="background:#fff">📅</span></div>Events</div>
+          <div class="tile"><div class="ic"><span style="background:#f3b65a;border-radius:50%">🗺️</span></div>Maps</div>
+          <div class="tile"><div class="ic"><span>🌱</span></div>Giving</div>
+        </div>
+        <div class="page">
+          <div class="tile"><div class="ic"><span style="background:#8fa3ff">📚</span></div>Library</div>
+          <div class="tile"><div class="ic"><span style="background:#ffb38a">🍜</span></div>Dining</div>
+          <div class="tile"><div class="ic"><span style="background:#9be29b">🚌</span></div>Shuttle Bus</div>
+          <div class="tile"><div class="ic"><span style="background:#e6a3e6">🏋️</span></div>Sports</div>
+        </div>
+      </div>
+      <div class="dots"><i class="on" id="dot0"></i><i id="dot1"></i></div>
+    </section>
+
+    <section class="quote">
+      <div class="sec-head">
+        <div class="quote-brand">Pause</div>
+        <button class="btn-sm">See More &gt;</button>
+      </div>
+      <h3>Wellness Quote for the Day</h3>
+      <p>"Well begun is half done."</p>
+      <em>Aristotle</em>
+    </section>
+
+    <section>
+      <div class="sec-head">
+        <div class="sec-title"><div class="sec-icon">📅</div>Events</div>
+      </div>
+      <div class="sec-head" style="margin-bottom:0">
+        <span class="ev-filter">Upcoming Events ▾</span>
+        <button class="btn-sm">See More &gt;</button>
+      </div>
+      <div class="events">
+        <div class="ev"><div class="img" style="background:linear-gradient(135deg,#5b7be0,#9fb5ff)"></div><div class="body"><b>Career Fair 2026</b><small>14 Nov · University Hall</small></div></div>
+        <div class="ev"><div class="img" style="background:linear-gradient(135deg,#a0522d,#e0a070)"></div><div class="body"><b>Alumni Homecoming</b><small>22 Nov · Central Lawn</small></div></div>
+        <div class="ev"><div class="img" style="background:linear-gradient(135deg,#13a37a,#7be0c0)"></div><div class="body"><b>Hack Night</b><small>29 Nov · Engineering Block</small></div></div>
+      </div>
+    </section>
+  </div>
+
+  <nav class="tabbar">
+    <button class="on"><svg width="28" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11l9-8 9 8v10H3z"/></svg>Home</button>
+    <button><svg width="28" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="3" width="14" height="18" rx="1"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Resources</button>
+    <button><svg width="28" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14"/><path d="M3 5l9 8 9-8"/></svg>Inbox</button>
+    <button><svg width="28" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="1"/><path d="M8 3v4M16 3v4M3 10h18M7 15h3M13 15h4"/></svg>Calendar</button>
+    <button><svg width="28" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>Emergency</button>
+  </nav>
+</div>
+
+<!-- ============ eCARD ============ -->
+<div class="screen hidden" id="card">
+  <div class="nav">
+    <button id="back" aria-label="Back"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 4l-8 8 8 8"/></svg></button>
+    <h2>eCard</h2>
+    <span></span>
+  </div>
+
+  <div class="scroll">
+    <div class="idcard">
+      <div class="head">
+        <span>Student</span>
+        <div class="uni"><div class="crest">M</div><div>MERIDIAN<small>Meridian<br>University</small></div></div>
+      </div>
+      <div class="body">
+        <div class="row">
+          <div class="photo blur" id="photo">
+            <svg viewBox="0 0 120 155"><circle cx="60" cy="62" r="26" fill="#2b2b2b"/><circle cx="60" cy="68" r="22" fill="#e8c6a8"/><path d="M14 155c4-36 24-50 46-50s42 14 46 50z" fill="#f2f2f2"/><path d="M48 106l12 20 12-20" fill="#2f3b66"/></svg>
+            <button id="togglePhoto" aria-label="Show photo">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="who">
+            <b>DAI TIANLE</b>
+            <div class="idline">
+              <span id="idText">A0196715U</span>
+              <button id="toggleId" aria-label="Hide ID">
+                <svg id="eyeIcon" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/><path d="M3 3l18 18"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="prog">
+          <b>College of Design &amp; Engineering</b><br>
+          Bachelor of Engineering<br>
+          Full-Time<br>
+          Admit Term: 2019/2020 Semester 1
+        </div>
+      </div>
+    </div>
+
+    <div class="qr-wrap">
+      <div class="qr-label">My QR <span id="countdown">(30 s)</span></div>
+      <div id="qr"></div>
+    </div>
+  </div>
+
+  <div class="sheet" id="sheet">
+    <div class="grip"></div>
+    <h3>My Contact Card</h3>
+    <dl>
+      <dt>Name</dt><dd>Dai Tianle</dd>
+      <dt>ID</dt><dd>A0196715U</dd>
+      <dt>Email</dt><dd>daitianle@example.edu</dd>
+      <dt>Phone</dt><dd>+65 0000 0000</dd>
+    </dl>
+  </div>
+</div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const home = $('home'), card = $('card');
+
+  // Explore page dots
+  $('pages').addEventListener('scroll', (e) => {
+    const p = Math.round(e.target.scrollLeft / e.target.clientWidth);
+    $('dot0').classList.toggle('on', p === 0);
+    $('dot1').classList.toggle('on', p === 1);
+  });
+
+  // QR: encodes a sample string only; refreshes when the countdown ends
+  const QR_SECONDS = 30;
+  let left = QR_SECONDS, timer = null;
+  function drawQR() {
+    const el = $('qr');
+    if (typeof qrcode === 'undefined') { el.textContent = 'QR unavailable offline'; return; }
+    const qr = qrcode(0, 'M');
+    qr.addData('SAMPLE-' + Date.now().toString(36).toUpperCase());
+    qr.make();
+    el.innerHTML = qr.createSvgTag({ cellSize: 6, margin: 0, scalable: true });
+  }
+  function tick() {
+    left -= 1;
+    if (left <= 0) { left = QR_SECONDS; drawQR(); }
+    $('countdown').textContent = '(' + left + ' s)';
+  }
+  function openCard() {
+    home.classList.add('hidden');
+    card.classList.remove('hidden');
+    left = QR_SECONDS;
+    $('countdown').textContent = '(' + left + ' s)';
+    drawQR();
+    clearInterval(timer);
+    timer = setInterval(tick, 1000);
+  }
+  function closeCard() {
+    clearInterval(timer);
+    $('sheet').classList.remove('open');
+    card.classList.add('hidden');
+    home.classList.remove('hidden');
+  }
+  $('openCard').addEventListener('click', openCard);
+  $('back').addEventListener('click', closeCard);
+
+  // Photo blur toggle
+  $('togglePhoto').addEventListener('click', () => $('photo').classList.toggle('blur'));
+
+  // ID mask toggle
+  let idShown = true;
+  $('toggleId').addEventListener('click', () => {
+    idShown = !idShown;
+    $('idText').textContent = idShown ? 'A0196715U' : 'A•••••••U';
+    $('eyeIcon').querySelector('path:last-child').style.display = idShown ? '' : 'none';
+  });
+
+  // Contact card sheet
+  $('sheet').addEventListener('click', () => $('sheet').classList.toggle('open'));
+</script>
+</body>
+</html>
